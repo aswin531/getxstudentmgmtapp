@@ -1,18 +1,33 @@
+// ignore_for_file: avoid_print
+
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:studgetx/presentation/widgets/addbutton.dart';
 import 'package:studgetx/presentation/widgets/customappbar.dart';
+import 'package:studgetx/presentation/widgets/imgcontainer.dart';
 import 'package:studgetx/presentation/widgets/textformfield.dart';
 import 'package:studgetx/repository/imagepickservices.dart';
 
 class StudentAddScreen extends StatelessWidget {
   final ImagePickerService _imagePickerService = ImagePickerService();
   final Rx<File?> imageFile = Rx<File?>(null);
-  void pickImage() async {
-    final imageFile = await _imagePickerService.pickImage();
-    if (imageFile != null) {
-      // imageFile.value = imageFile;
+
+  Future<void> pickImageFromGallery() async {
+    final pickedImage =
+        await _imagePickerService.pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      imageFile.value = pickedImage;
+      print('Image picked from gallery : ${imageFile.value?.path}');
+    }
+  }
+
+  Future<void> pickImageFromCamera() async {
+    final pickedImage =
+        await _imagePickerService.pickImage(source: ImageSource.camera);
+    if (pickedImage != null) {
+      imageFile.value = pickedImage;
     }
   }
 
@@ -31,30 +46,12 @@ class StudentAddScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Stack(
-                  children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.5,
-                      height: MediaQuery.of(context).size.height * 0.3,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10)),
-                      child: ClipRRect(
-                        clipBehavior: Clip.hardEdge,
-                        child: Image.asset("assets/images/profile.png"),
-                      ),
-                    ),
-                    Positioned(
-                      right: 16,
-                      bottom: 16,
-                      child: FloatingActionButton(
-                        onPressed: () {},
-                        mini: true,
-                        splashColor: Colors.green,
-                        backgroundColor: Colors.white54,
-                        child: const Icon(Icons.add),
-                      ),
-                    )
-                  ],
+                Obx(
+                  () => ImageWithFloatingActionButton(
+                    imagePath:
+                        imageFile.value?.path,
+                    onPressed: () => pickImageFromGallery(),
+                  ),
                 ),
                 const Padding(
                   padding: EdgeInsets.all(5.0),

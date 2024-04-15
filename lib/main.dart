@@ -6,10 +6,12 @@ import 'package:studgetx/presentation/controllers/studentcontroller.dart';
 import 'package:studgetx/presentation/screens/firstscreen.dart';
 import 'package:studgetx/presentation/screens/loginview.dart';
 import 'package:studgetx/presentation/screens/splashscreen.dart';
+import 'package:studgetx/repository/boxrepository.dart';
 
 void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(StudentModelAdapter());
+  await BoxRepository.openBox();
   Get.put(StudentController());
   runApp(const MyApp());
 }

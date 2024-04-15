@@ -18,14 +18,17 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       automaticallyImplyLeading: false,
-      backgroundColor:white,
+      backgroundColor: white,
       title: Row(
         children: [
           IconButton(
-            icon:const Icon(Icons.arrow_back_ios),
+            icon: const Icon(Icons.arrow_back_ios),
             onPressed: onBackPressed ?? () => Navigator.of(context).pop(),
           ),
-          Text(title),
+          Text(
+            title,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+          ),
         ],
       ),
     );

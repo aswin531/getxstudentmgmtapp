@@ -15,7 +15,7 @@ class HomePage extends StatelessWidget {
             return ListTile(
               tileColor: Colors.amber,
               title: Obx(() => Text(student.name!.value)),
-              subtitle:Obx(() => Text(student.phone!.value))
+              subtitle:Obx(() => Text(student.phone!.value))  
             );
           },
         ));
